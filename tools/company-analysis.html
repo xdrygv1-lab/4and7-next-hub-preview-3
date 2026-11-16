@@ -124,6 +124,29 @@ ul.chk-list .who{margin-left:auto;font-size:12px;color:var(--muted);white-space:
 </style>
 </head>
 <body>
+<!-- 4&7 NEXT 입구 비밀번호 (build_site.py가 모든 페이지 body 맨 앞에 넣음. ../config.json = config.json 경로) -->
+<div id="g47" style="position:fixed;inset:0;z-index:2147483000;background:#0a0b0d;display:grid;place-items:center;font-family:Pretendard,'Malgun Gothic',system-ui,sans-serif">
+  <form id="g47f" style="background:#fff;border:0;border-radius:24px;padding:28px 26px;width:min(340px,calc(100vw - 32px));box-shadow:0 6px 24px rgba(0,0,0,.06)">
+    <div style="font-weight:800;font-size:20px;color:#0a0b0d">4&amp;7 NEXT</div>
+    <div style="color:#5f6b66;font-size:14px;margin:6px 0 16px">팀 비밀번호를 넣어 주세요. 한 번 넣으면 이 기기에서 기억합니다.</div>
+    <input id="g47p" type="password" inputmode="numeric" autocomplete="current-password" placeholder="비밀번호" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid #dee1e6;border-radius:12px;font-size:16px">
+    <button type="submit" style="margin-top:12px;width:100%;padding:11px;border:0;border-radius:100px;background:#0052FF;color:#fff;font-size:15px;font-weight:700;cursor:pointer">들어가기</button>
+    <div id="g47m" style="color:#E5322D;font-size:13px;margin-top:8px;min-height:1em"></div>
+  </form>
+</div>
+<script>(function(){var K='team_pass',CFG='../config.json',g=document.getElementById('g47'),m=document.getElementById('g47m'),v='';
+try{v=localStorage.getItem(K)||''}catch(e){}
+function ep(){return fetch(CFG,{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){return String(j.endpoint||'').trim()}).catch(function(){return ''})}
+var dv='';try{dv=localStorage.getItem('g47dv')||'';if(!dv){dv=Math.random().toString(36).slice(2,10);localStorage.setItem('g47dv',dv)}}catch(e){}
+function check(p,k){var pg=(location.pathname.split('/').filter(Boolean).pop()||'hub')+(location.hash||'').slice(0,20);return ep().then(function(e){if(!e)return null;return fetch(e+'?action=passcheck&pass='+encodeURIComponent(p)+'&k='+(k||'auto')+'&pg='+encodeURIComponent(pg)+'&dv='+dv+'&r='+Date.now()).then(function(r){return r.json()}).then(function(j){return !!j.ok}).catch(function(){return null})})}
+if(v){g.style.display='none';check(v).then(function(ok){if(ok===false){try{localStorage.removeItem(K)}catch(e){}g.style.display='grid';m.textContent='비밀번호가 바뀌었어요. 다시 넣어 주세요.'}})}
+else setTimeout(function(){var i=document.getElementById('g47p');if(i)i.focus()},50);
+document.getElementById('g47f').addEventListener('submit',function(e){e.preventDefault();var p=document.getElementById('g47p').value.trim();if(!p)return;m.style.color='#5f6b66';m.textContent='확인 중…';
+  check(p,'new').then(function(ok){if(ok===false){m.style.color='#c0392b';m.textContent='비밀번호가 맞지 않아요.';return}
+    if(ok===null){m.style.color='#c0392b';m.textContent='연결하지 못했어요. 잠시 후 다시 시도해 주세요.';return}
+    try{localStorage.setItem(K,p)}catch(e){}g.style.display='none';try{location.reload()}catch(e){}})});
+})();</script>
+
 <header>
   <h1>업체 분석 보고서</h1>
   <span class="sub">재무제표 → 이슈 신호등 → 보험 제안 · 내부용</span>
